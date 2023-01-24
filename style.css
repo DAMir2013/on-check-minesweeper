@@ -1,95 +1,109 @@
 h1 {
-  text-align: center;
+    text-align: center;
 }
 #main {
-  width: 800px;
-  height: 600px;
-  text-align: center;
+    width: 800px;
+    height: 600px;
+    text-align: center;
+}
+
+.tools {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin-left: auto;
+    margin-right: auto;
+}
+.numberMines {
+    background-color: black;
+    color: red;
+}
+.timerClass {
+    background-color: aqua;
 }
 .fieldClass {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 50px);
-  margin-left: auto;
-  margin-right: auto;
-  width: 400px;
-  height: 400px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 50px);
+    margin-left: auto;
+    margin-right: auto;
+    width: 400px;
+    height: 400px;
 }
 .classCell {
-  width: 50px;
-  height: 50px;
-  border: 2px solid rgb(41, 40, 40);
+    width: 50px;
+    height: 50px;
+    border: 2px solid rgb(41, 40, 40);
 }
 .classMine {
-  background-image: url(unnamed.png);
-  width: 50px;
-  height: 50px;
-  background-size: 100%;
-  background-position: center;
-  border: 2px solid rgb(41, 40, 40);
+    background-image: url(images/unnamed.png);
+    width: 50px;
+    height: 50px;
+    background-size: 100%;
+    background-position: center;
+    border: 2px solid rgb(41, 40, 40);
 }
 .class1 {
-  background-image: url(1.png);
-  width: 50px;
-  height: 50px;
-  background-size: 100%;
-  background-position: center;
-  border: 2px solid rgb(41, 40, 40);
+    background-image: url(images/1.png);
+    width: 50px;
+    height: 50px;
+    background-size: 100%;
+    background-position: center;
+    border: 2px solid rgb(41, 40, 40);
 }
 .class2 {
-  background-image: url(2.png);
-  width: 50px;
-  height: 50px;
-  background-size: 100%;
-  background-position: center;
-  border: 2px solid rgb(41, 40, 40);
+    background-image: url(images/2.png);
+    width: 50px;
+    height: 50px;
+    background-size: 100%;
+    background-position: center;
+    border: 2px solid rgb(41, 40, 40);
 }
 .class3 {
-  background-image: url(3.png);
-  width: 50px;
-  height: 50px;
-  background-size: 100%;
-  background-position: center;
-  border: 2px solid rgb(41, 40, 40);
+    background-image: url(images/3.png);
+    width: 50px;
+    height: 50px;
+    background-size: 100%;
+    background-position: center;
+    border: 2px solid rgb(41, 40, 40);
 }
 .class4 {
-  background-image: url(4.png);
-  width: 50px;
-  height: 50px;
-  background-size: 100%;
-  background-position: center;
-  border: 2px solid rgb(41, 40, 40);
+    background-image: url(images/4.png);
+    width: 50px;
+    height: 50px;
+    background-size: 100%;
+    background-position: center;
+    border: 2px solid rgb(41, 40, 40);
 }
 .class5 {
-  background-image: url(5.png);
-  width: 50px;
-  height: 50px;
-  background-size: 100%;
-  background-position: center;
-  border: 2px solid rgb(41, 40, 40);
+    background-image: url(images/5.png);
+    width: 50px;
+    height: 50px;
+    background-size: 100%;
+    background-position: center;
+    border: 2px solid rgb(41, 40, 40);
 }
 .class6 {
-  background-image: url(6.png);
-  width: 50px;
-  height: 50px;
-  background-size: 100%;
-  background-position: center;
-  border: 2px solid rgb(41, 40, 40);
+    background-image: url(images/6.png);
+    width: 50px;
+    height: 50px;
+    background-size: 100%;
+    background-position: center;
+    border: 2px solid rgb(41, 40, 40);
 }
 .class7 {
-  background-image: url(7.png);
-  width: 50px;
-  height: 50px;
-  background-size: 100%;
-  background-position: center;
-  border: 2px solid rgb(41, 40, 40);
+    background-image: url(images/7.png);
+    width: 50px;
+    height: 50px;
+    background-size: 100%;
+    background-position: center;
+    border: 2px solid rgb(41, 40, 40);
 }
 .class8 {
-  background-image: url(8.png);
-  width: 50px;
-  height: 50px;
-  background-size: 100%;
-  background-position: center;
-  border: 2px solid rgb(41, 40, 40);
+    background-image: url(images/8.png);
+    width: 50px;
+    height: 50px;
+    background-size: 100%;
+    background-position: center;
+    border: 2px solid rgb(41, 40, 40);
 }
 /* .closeCell {
   width: 50px;
@@ -98,19 +112,28 @@ h1 {
   border: 2px solid rgb(41, 40, 40);
 } */
 .closeCell {
-  background-image: url(fon.png);
-  /* width: 50px;
+    background-image: url(images/fon.png);
+    /* width: 50px;
   height: 50px; */
-  background-size: 100%;
-  background-position: center;
-  /* border: 2px solid rgb(41, 40, 40); */
+    background-size: 100%;
+    background-position: center;
+    /* border: 2px solid rgb(41, 40, 40); */
 }
 .classBoom {
-  background-image: url(YQDj.gif);
-  width: 50px;
-  height: 50px;
-  background-size: 100%;
-  background-position: center;
-  /* transition-property: background-color;
+    background-image: url(images/YQDj.gif);
+    width: 50px;
+    height: 50px;
+    background-size: 100%;
+    background-position: center;
+    /* transition-property: background-color;
   transition-duration: 3s; */
+}
+
+.flagImg {
+    background-image: url(images/flag.png);
+    width: 50px;
+    height: 50px;
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
 }
