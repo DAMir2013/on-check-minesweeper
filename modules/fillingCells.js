@@ -1,36 +1,6 @@
-"use strict";
-
-import { createCell, createField } from "./modules/checkCloseCell.js";
-function createButton(value) {
-    let title = document.createElement("h1");
-    title.innerHTML = "Minesweeper";
-    document.getElementById("main").appendChild(title);
-
-    const toolsDiv = document.createElement("div");
-    toolsDiv.classList.add("tools");
-    document.getElementById("main").appendChild(toolsDiv);
-
-    let numberMine = document.createElement("div");
-    numberMine.classList.add("numberMines");
-    document.querySelector(".tools").appendChild(numberMine);
-    document.querySelector(".numberMines").innerHTML = "10 Mines";
-
-    let button = document.createElement("button");
-    document.querySelector(".tools").appendChild(button);
-    document.querySelector("button").innerHTML = "START GAME";
-
-    let timer = document.createElement("div");
-    timer.classList.add("timerClass");
-    document.querySelector(".tools").appendChild(timer);
-    document.querySelector(".timerClass").innerHTML = "00";
-
-    let startTimer = button.addEventListener("click", clickButton);
-}
-createButton(1);
-
 let arrayCoordinate = [];
 
-function getArr(x, y, value) {
+export function getArr(x, y, value) {
     let arr1 = [
         [x - 1, y - 1],
         [x, y - 1],
@@ -122,7 +92,7 @@ function getArr(x, y, value) {
     }
 }
 
-function checkCondition(x, y, l) {
+export function checkCondition(x, y, l) {
     let array = getArr(x, y, l);
 
     let counter = 0;
@@ -169,7 +139,7 @@ function checkCondition(x, y, l) {
     }
 }
 
-function checkCell() {
+export function checkCell() {
     for (let k = 0; k <= 9; k++) {
         createMine();
     }
@@ -221,7 +191,7 @@ function checkCell() {
     openAroundclass(1, 1);
 }
 
-function closeCell() {
+export function closeCell() {
     for (let y = 1; y < 9; y++) {
         for (let x = 1; x < 9; x++) {
             document
@@ -240,11 +210,11 @@ function closeCell() {
     }
 }
 
-function openListener() {
+export function openListener() {
     document.addEventListener("click", getCoord);
 }
 
-function checkClick(x, y, l) {
+export function checkClick(x, y, l) {
     let arrayCheck = getArr(x, y, l);
     let counter = 0;
     for (let r = 0; r < arrayCheck.length; r++) {
@@ -271,7 +241,7 @@ function checkClick(x, y, l) {
     }
 }
 
-function openListenerRight(condition) {
+export function openListenerRight(condition) {
     if (condition == 1) {
         window.oncontextmenu = function () {
             event.target.classList.add("flagImg");
@@ -280,7 +250,7 @@ function openListenerRight(condition) {
         window.oncontextmenu = "End Game";
     }
 }
-function createMine() {
+export function createMine() {
     let x = Math.floor(Math.random() * (8 - 1 + 1) + 1);
 
     let y = Math.floor(Math.random() * (8 - 1 + 1) + 1);
@@ -300,7 +270,7 @@ function createMine() {
     }
 }
 
-function getCoord(event) {
+export function getCoord(event) {
     document.querySelector("button").removeEventListener("click", clickButton);
 
     if (event.target.classList.value == "classMine closeCell") {
@@ -337,110 +307,4 @@ function clickButton() {
 
         i++;
     }, 1000);
-}
-
-function checkEmptyCells(event) {
-    event.target.classList.remove("closeCell");
-
-    let x = Number(event.target.getAttribute("positionx"));
-    let y = Number(event.target.getAttribute("positiony"));
-    openAround(x, y, 1);
-    function openAround(x, y, s) {
-        if (x > 1 && x < 8 && y > 1 && y < 8) {
-            checkClick(x, y, 1);
-        }
-        if (x > 1 && x < 8 && y == 1) {
-            checkClick(x, y, 2);
-        }
-        if (x == 1 && y == 1) {
-            checkClick(x, y, 3);
-        }
-        if (x == 1 && y > 1 && y < 8) {
-            checkClick(x, y, 4);
-        }
-        if (x == 1 && y == 8) {
-            checkClick(x, y, 5);
-        }
-        if (x > 1 && x < 8 && y == 8) {
-            checkClick(x, y, 6);
-        }
-        if (x == 8 && y == 8) {
-            checkClick(x, y, 7);
-        }
-        if (x == 8 && y > 1 && y < 8) {
-            checkClick(x, y, 8);
-        }
-        if (x == 8 && y == 1) {
-            checkClick(x, y, 9);
-        }
-
-        for (let i = 0; i < arrayCoordinate.length; i++) {
-            document
-                .querySelector(
-                    `[positionX = "${arrayCoordinate[i][0]}"][positionY = "${arrayCoordinate[i][1]}"]`
-                )
-                .classList.remove("closeCell");
-        }
-
-        if (s != 1) {
-            for (let k = 0; k < arrayCoordinate.length; k++) {
-                if (arrayCoordinate[k][0] == x && arrayCoordinate[k][1] == y) {
-                    arrayCoordinate.splice(k, 1);
-                }
-            }
-        }
-
-        if (arrayCoordinate.length > 0) {
-            openAround(arrayCoordinate[0][0], arrayCoordinate[0][1], 10);
-        }
-    }
-}
-
-function checkMineClass(event) {
-    event.target.classList.remove("closeCell");
-    event.target.classList.add("classBoom");
-    event.target.classList.remove("classMine");
-    document.removeEventListener("click", getCoord);
-
-    for (let y = 1; y < 9; y++) {
-        for (let x = 1; x < 9; x++) {
-            if (
-                document.querySelector(
-                    `[positionX = "${x}"][positionY = "${y}"]`
-                ).classList.value == "classMine closeCell"
-            ) {
-                document
-                    .querySelector(`[positionX = "${x}"][positionY = "${y}"]`)
-                    .classList.add("classBoom");
-                document
-                    .querySelector(`[positionX = "${x}"][positionY = "${y}"]`)
-                    .classList.remove("classMine");
-            }
-            if (
-                document.querySelector(
-                    `[positionX = "${x}"][positionY = "${y}"]`
-                ).classList.value == "classMine closeCell flagImg"
-            ) {
-                document
-                    .querySelector(`[positionX = "${x}"][positionY = "${y}"]`)
-                    .classList.remove("flagImg");
-                document
-                    .querySelector(`[positionX = "${x}"][positionY = "${y}"]`)
-                    .classList.add("classBoom");
-                document
-                    .querySelector(`[positionX = "${x}"][positionY = "${y}"]`)
-                    .classList.remove("classMine");
-            }
-        }
-    }
-    clearInterval(timerId);
-    openListenerRight(10);
-    alert("End of Game");
-}
-function optimizeCalls() {
-    createField();
-    checkCell();
-    closeCell();
-    openListener();
-    openListenerRight(1);
 }
