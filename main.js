@@ -1,7 +1,7 @@
 "use strict";
 
 import { createCell, createField } from "./modules/checkCloseCell.js";
-function createButton(value) {
+function createButton() {
     let title = document.createElement("h1");
     title.innerHTML = "Minesweeper";
     document.getElementById("main").appendChild(title);
@@ -26,22 +26,19 @@ function createButton(value) {
 
     let startTimer = button.addEventListener("click", clickButton);
 }
-createButton(1);
+createButton();
 
 let arrayCoordinate = [];
 
-function getArr(x, y, value) {
-    let arr1 = [
+function getArr(x, y) {
+    let arrPosition = [];
+
+    let posX = 0;
+    let posY = 0;
+    let checkValueArray = [
         [x - 1, y - 1],
         [x, y - 1],
         [x + 1, y - 1],
-        [x - 1, y],
-        [x + 1, y],
-        [x - 1, y + 1],
-        [x, y + 1],
-        [x + 1, y + 1],
-    ];
-    let arr2 = [
         [x - 1, y],
         [x + 1, y],
         [x - 1, y + 1],
@@ -49,101 +46,39 @@ function getArr(x, y, value) {
         [x + 1, y + 1],
     ];
 
-    let arr3 = [
-        [x + 1, y],
-        [x + 1, y + 1],
-        [x, y + 1],
-    ];
-    let arr4 = [
-        [x, y + 1],
-        [x, y - 1],
-        [x + 1, y - 1],
-        [x + 1, y],
-        [x + 1, y + 1],
-    ];
-    let arr5 = [
-        [x, y - 1],
-        [x + 1, y - 1],
-        [x + 1, y],
-    ];
-    let arr6 = [
-        [x - 1, y - 1],
-        [x, y - 1],
-        [x + 1, y - 1],
-        [x - 1, y],
-        [x + 1, y],
-    ];
-    let arr7 = [
-        [x, y - 1],
-        [x - 1, y - 1],
-        [x - 1, y],
-    ];
-    let arr8 = [
-        [x, y - 1],
-        [x - 1, y - 1],
-        [x - 1, y],
-        [x - 1, y + 1],
-        [x, y + 1],
-    ];
-    let arr9 = [
-        [x - 1, y],
-        [x - 1, y + 1],
-        [x, y + 1],
-    ];
-
-    switch (value) {
-        case 1:
-            return arr1;
-            break;
-        case 2:
-            return arr2;
-            break;
-        case 3:
-            return arr3;
-            break;
-        case 4:
-            return arr4;
-            break;
-        case 5:
-            return arr5;
-            break;
-        case 6:
-            return arr6;
-            break;
-        case 7:
-            return arr7;
-            break;
-        case 8:
-            return arr8;
-            break;
-        case 9:
-            return arr9;
-            break;
+    for (let elem of checkValueArray) {
+        posX = elem[0];
+        posY = elem[1];
+        if (posX > 0 && posX < 9 && posY > 0 && posY < 9) {
+            arrPosition.push([posX, posY]);
+        }
     }
+
+    return arrPosition;
 }
 
-function checkCondition(x, y, l) {
-    let array = getArr(x, y, l);
+function checkCondition(x, y) {
+    let array = getArr(x, y);
 
     let counter = 0;
 
-    for (let r = 0; r < array.length; r++) {
+    for (let i = 0; i < array.length; i++) {
         if (
             document.querySelector(
-                `[positionX = "${array[r][0]}"][positionY = "${array[r][1]}"]`
+                `[positionX = "${array[i][0]}"][positionY = "${array[i][1]}"]`
             ).classList.value == "classCell"
         ) {
             let count = 0;
             for (let elem of arrayCoordinate) {
-                if (elem[0] == array[r][0] && elem[1] == array[r][1]) {
+                if (elem[0] == array[i][0] && elem[1] == array[i][1]) {
                     count++;
                 }
             }
             if (count == 0) {
-                arrayCoordinate.push([array[r][0], array[r][1]]);
+                arrayCoordinate.push([array[i][0], array[i][1]]);
                 document
                     .querySelector(
-                        `[positionX = "${array[r][0]}"][positionY = "${array[r][1]}"]`
+                        `[positionX = "${array[i][0]}"][positionY = "${array[i][1]}"]`
                     )
                     .classList.add("checkClass");
             }
@@ -151,7 +86,7 @@ function checkCondition(x, y, l) {
 
         if (
             document.querySelector(
-                `[positionX = "${array[r][0]}"][positionY = "${array[r][1]}"]`
+                `[positionX = "${array[i][0]}"][positionY = "${array[i][1]}"]`
             ).classList.value == "classMine"
         ) {
             counter++;
@@ -170,44 +105,18 @@ function checkCondition(x, y, l) {
 }
 
 function checkCell() {
-    for (let k = 0; k <= 9; k++) {
+    for (let i = 0; i <= 9; i++) {
         createMine();
     }
 
     function openAroundclass(x, y, s = 1) {
-        if (x > 1 && x < 8 && y > 1 && y < 8) {
-            checkCondition(x, y, 1);
-        }
-        if (x > 1 && x < 8 && y == 1) {
-            checkCondition(x, y, 2);
-        }
-        if (x == 1 && y == 1) {
-            checkCondition(x, y, 3);
-        }
-        if (x == 1 && y > 1 && y < 8) {
-            checkCondition(x, y, 4);
-        }
-        if (x == 1 && y == 8) {
-            checkCondition(x, y, 5);
-        }
-        if (x > 1 && x < 8 && y == 8) {
-            checkCondition(x, y, 6);
-        }
-        if (x == 8 && y == 8) {
-            checkCondition(x, y, 7);
-        }
-        if (x == 8 && y > 1 && y < 8) {
-            checkCondition(x, y, 8);
-        }
-        if (x == 8 && y == 1) {
-            checkCondition(x, y, 9);
-        }
+        checkCondition(x, y);
 
         if (s != 1) {
-            for (let k = 0; k < arrayCoordinate.length; k++) {
-                if (arrayCoordinate[k][0] == x && arrayCoordinate[k][1] == y) {
+            for (let i = 0; i < arrayCoordinate.length; i++) {
+                if (arrayCoordinate[i][0] == x && arrayCoordinate[i][1] == y) {
                     // alert("SoS");
-                    arrayCoordinate.splice(k, 1);
+                    arrayCoordinate.splice(i, 1);
                 }
             }
         }
@@ -244,28 +153,28 @@ function openListener() {
     document.addEventListener("click", getCoord);
 }
 
-function checkClick(x, y, l) {
-    let arrayCheck = getArr(x, y, l);
+function checkClick(x, y) {
+    let arrayCheck = getArr(x, y);
     let counter = 0;
-    for (let r = 0; r < arrayCheck.length; r++) {
+    for (let i = 0; i < arrayCheck.length; i++) {
         if (
             document.querySelector(
-                `[positionX = "${arrayCheck[r][0]}"][positionY = "${arrayCheck[r][1]}"]`
+                `[positionX = "${arrayCheck[i][0]}"][positionY = "${arrayCheck[i][1]}"]`
             ).classList.value == "classCell closeCell"
         ) {
-            arrayCoordinate.push([arrayCheck[r][0], arrayCheck[r][1]]);
+            arrayCoordinate.push([arrayCheck[i][0], arrayCheck[i][1]]);
         }
 
         if (
             document.querySelector(
-                `[positionX = "${arrayCheck[r][0]}"][positionY = "${arrayCheck[r][1]}"]`
+                `[positionX = "${arrayCheck[i][0]}"][positionY = "${arrayCheck[i][1]}"]`
             ).classList.value == "classMine closeCell"
         ) {
             counter++;
         } else
             document
                 .querySelector(
-                    `[positionX = "${arrayCheck[r][0]}"][positionY = "${arrayCheck[r][1]}"]`
+                    `[positionX = "${arrayCheck[i][0]}"][positionY = "${arrayCheck[i][1]}"]`
                 )
                 .classList.remove("closeCell");
     }
@@ -346,33 +255,7 @@ function checkEmptyCells(event) {
     let y = Number(event.target.getAttribute("positiony"));
     openAround(x, y, 1);
     function openAround(x, y, s) {
-        if (x > 1 && x < 8 && y > 1 && y < 8) {
-            checkClick(x, y, 1);
-        }
-        if (x > 1 && x < 8 && y == 1) {
-            checkClick(x, y, 2);
-        }
-        if (x == 1 && y == 1) {
-            checkClick(x, y, 3);
-        }
-        if (x == 1 && y > 1 && y < 8) {
-            checkClick(x, y, 4);
-        }
-        if (x == 1 && y == 8) {
-            checkClick(x, y, 5);
-        }
-        if (x > 1 && x < 8 && y == 8) {
-            checkClick(x, y, 6);
-        }
-        if (x == 8 && y == 8) {
-            checkClick(x, y, 7);
-        }
-        if (x == 8 && y > 1 && y < 8) {
-            checkClick(x, y, 8);
-        }
-        if (x == 8 && y == 1) {
-            checkClick(x, y, 9);
-        }
+        checkClick(x, y);
 
         for (let i = 0; i < arrayCoordinate.length; i++) {
             document
@@ -383,9 +266,9 @@ function checkEmptyCells(event) {
         }
 
         if (s != 1) {
-            for (let k = 0; k < arrayCoordinate.length; k++) {
-                if (arrayCoordinate[k][0] == x && arrayCoordinate[k][1] == y) {
-                    arrayCoordinate.splice(k, 1);
+            for (let i = 0; i < arrayCoordinate.length; i++) {
+                if (arrayCoordinate[i][0] == x && arrayCoordinate[i][1] == y) {
+                    arrayCoordinate.splice(i, 1);
                 }
             }
         }
