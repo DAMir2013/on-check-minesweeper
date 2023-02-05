@@ -1,8 +1,8 @@
-export function createCell(x, y) {
+export function createCell(row, col) {
     const cell = document.createElement("div");
     cell.classList.add("classCell");
-    cell.setAttribute("positionX", x);
-    cell.setAttribute("positionY", y);
+    cell.setAttribute("positionX", row);
+    cell.setAttribute("positionY", col);
     document.querySelector(".fieldClass").appendChild(cell);
 }
 export function createField() {
@@ -10,9 +10,9 @@ export function createField() {
     field.classList.add("fieldClass");
     document.getElementById("main").appendChild(field);
 
-    for (let y = 1; y < 9; y++) {
-        for (let x = 1; x < 9; x++) {
-            createCell(x, y);
+    for (let col = 1; col < 9; col++) {
+        for (let row = 1; row < 9; row++) {
+            createCell(row, col);
         }
     }
 }

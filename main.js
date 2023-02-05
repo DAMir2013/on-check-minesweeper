@@ -1,6 +1,9 @@
 "use strict";
 
-import { createCell, createField } from "./modules/checkCloseCell.js";
+import { createCell, createField } from "./modules/createField&Cells.js";
+
+import { createMine, fillMine, closeCell } from "./modules/createMines&СlosureCells.js";
+
 function createButton() {
     let title = document.createElement("h1");
     title.innerHTML = "Minesweeper";
@@ -33,151 +36,48 @@ let arrayCoordinate = [];
 function getArr(x, y) {
     let arrPosition = [];
 
-    let posX = 0;
-    let posY = 0;
-    let checkValueArray = [
-        [x - 1, y - 1],
-        [x, y - 1],
-        [x + 1, y - 1],
-        [x - 1, y],
-        [x + 1, y],
-        [x - 1, y + 1],
-        [x, y + 1],
-        [x + 1, y + 1],
-    ];
-
-    for (let elem of checkValueArray) {
-        posX = elem[0];
-        posY = elem[1];
-        if (posX > 0 && posX < 9 && posY > 0 && posY < 9) {
-            arrPosition.push([posX, posY]);
+    for (let col = y - 1; col <= y + 1; col++) {
+        for (let row = x - 1; row <= x + 1; row++) {
+            if (row > 0 && row < 9 && col > 0 && col < 9) {
+                arrPosition.push([row, col]);
+            }
         }
     }
+
+    for (let i = 0; i < arrPosition.length; i++) {
+        if (arrPosition[i][0] == x && arrPosition[i][1] == y) {
+            console.log("NUNU");
+            console.log(arrPosition[i][0]);
+            console.log(arrPosition[i][1]);
+            arrPosition.splice(i, 1);
+        }
+    }
+    // let posX = 0;
+    // let posY = 0;
+    // let checkValueArray = [
+    //     [x - 1, y - 1],
+    //     [x, y - 1],
+    //     [x + 1, y - 1],
+    //     [x - 1, y],
+    //     [x + 1, y],
+    //     [x - 1, y + 1],
+    //     [x, y + 1],
+    //     [x + 1, y + 1],
+    // ];
+
+    // for (let elem of checkValueArray) {
+    //     posX = elem[0];
+    //     posY = elem[1];
+    //     if (posX > 0 && posX < 9 && posY > 0 && posY < 9) {
+    //         arrPosition.push([posX, posY]);
+    //     }
+    // }
 
     return arrPosition;
 }
 
-function checkCondition(x, y) {
-    let array = getArr(x, y);
-
-    let counter = 0;
-
-    for (let i = 0; i < array.length; i++) {
-        if (
-            document.querySelector(
-                `[positionX = "${array[i][0]}"][positionY = "${array[i][1]}"]`
-            ).classList.value == "classCell"
-        ) {
-            let count = 0;
-            for (let elem of arrayCoordinate) {
-                if (elem[0] == array[i][0] && elem[1] == array[i][1]) {
-                    count++;
-                }
-            }
-            if (count == 0) {
-                arrayCoordinate.push([array[i][0], array[i][1]]);
-                document
-                    .querySelector(
-                        `[positionX = "${array[i][0]}"][positionY = "${array[i][1]}"]`
-                    )
-                    .classList.add("checkClass");
-            }
-        }
-
-        if (
-            document.querySelector(
-                `[positionX = "${array[i][0]}"][positionY = "${array[i][1]}"]`
-            ).classList.value == "classMine"
-        ) {
-            counter++;
-        }
-    }
-    if (counter > 0) {
-        if (
-            document.querySelector(`[positionX = "${x}"][positionY = "${y}"]`)
-                .classList.value != "classMine"
-        ) {
-            document
-                .querySelector(`[positionX = "${x}"][positionY = "${y}"]`)
-                .classList.add(`class${counter}`);
-        }
-    }
-}
-
-function checkCell() {
-    for (let i = 0; i <= 9; i++) {
-        createMine();
-    }
-
-    function openAroundclass(x, y, s = 1) {
-        checkCondition(x, y);
-
-        if (s != 1) {
-            for (let i = 0; i < arrayCoordinate.length; i++) {
-                if (arrayCoordinate[i][0] == x && arrayCoordinate[i][1] == y) {
-                    // alert("SoS");
-                    arrayCoordinate.splice(i, 1);
-                }
-            }
-        }
-
-        if (arrayCoordinate.length > 0) {
-            openAroundclass(arrayCoordinate[0][0], arrayCoordinate[0][1], 10);
-            arrayCoordinate.shift();
-        }
-    }
-
-    openAroundclass(1, 1);
-}
-
-function closeCell() {
-    for (let y = 1; y < 9; y++) {
-        for (let x = 1; x < 9; x++) {
-            document
-                .querySelector(`[positionX = "${x}"][positionY = "${y}"]`)
-                .classList.add("closeCell");
-            if (
-                document.querySelector(
-                    `[positionX = "${x}"][positionY = "${y}"]`
-                ).classList.value != "classMine closeCell"
-            ) {
-                document
-                    .querySelector(`[positionX = "${x}"][positionY = "${y}"]`)
-                    .classList.remove("checkClass");
-            }
-        }
-    }
-}
-
 function openListener() {
     document.addEventListener("click", getCoord);
-}
-
-function checkClick(x, y) {
-    let arrayCheck = getArr(x, y);
-    let counter = 0;
-    for (let i = 0; i < arrayCheck.length; i++) {
-        if (
-            document.querySelector(
-                `[positionX = "${arrayCheck[i][0]}"][positionY = "${arrayCheck[i][1]}"]`
-            ).classList.value == "classCell closeCell"
-        ) {
-            arrayCoordinate.push([arrayCheck[i][0], arrayCheck[i][1]]);
-        }
-
-        if (
-            document.querySelector(
-                `[positionX = "${arrayCheck[i][0]}"][positionY = "${arrayCheck[i][1]}"]`
-            ).classList.value == "classMine closeCell"
-        ) {
-            counter++;
-        } else
-            document
-                .querySelector(
-                    `[positionX = "${arrayCheck[i][0]}"][positionY = "${arrayCheck[i][1]}"]`
-                )
-                .classList.remove("closeCell");
-    }
 }
 
 function openListenerRight(condition) {
@@ -189,31 +89,11 @@ function openListenerRight(condition) {
         window.oncontextmenu = "End Game";
     }
 }
-function createMine() {
-    let x = Math.floor(Math.random() * (8 - 1 + 1) + 1);
-
-    let y = Math.floor(Math.random() * (8 - 1 + 1) + 1);
-
-    if (
-        document.querySelector(`[positionX = "${x}"][positionY = "${y}"]`)
-            .classList.value == "classMine"
-    ) {
-        createMine();
-    } else {
-        document
-            .querySelector(`[positionX = "${x}"][positionY = "${y}"]`)
-            .classList.add("classMine");
-        document
-            .querySelector(`[positionX = "${x}"][positionY = "${y}"]`)
-            .classList.remove("classCell");
-    }
-}
-
 function getCoord(event) {
     document.querySelector("button").removeEventListener("click", clickButton);
 
     if (event.target.classList.value == "classMine closeCell") {
-        checkMineClass(event);
+        explosionMineClass(event);
     }
 
     if (
@@ -232,6 +112,52 @@ function getCoord(event) {
         checkEmptyCells(event);
     }
 }
+
+function checkCondition(x, y) {
+    let array = getArr(x, y);
+
+    let counter = 0;
+
+    for (let i = 0; i < array.length; i++) {
+        if (document.querySelector(`[positionX = "${array[i][0]}"][positionY = "${array[i][1]}"]`).classList.value == "classCell") {
+            let count = 0;
+            for (let elem of arrayCoordinate) {
+                if (elem[0] == array[i][0] && elem[1] == array[i][1]) {
+                    count++;
+                }
+            }
+            if (count == 0) {
+                arrayCoordinate.push([array[i][0], array[i][1]]);
+                document.querySelector(`[positionX = "${array[i][0]}"][positionY = "${array[i][1]}"]`).classList.add("checkClass");
+            }
+        }
+
+        if (document.querySelector(`[positionX = "${array[i][0]}"][positionY = "${array[i][1]}"]`).classList.value == "classMine") {
+            counter++;
+        }
+    }
+
+    if (counter > 0) {
+        if (document.querySelector(`[positionX = "${x}"][positionY = "${y}"]`).classList.value != "classMine") {
+            document.querySelector(`[positionX = "${x}"][positionY = "${y}"]`).classList.add(`class${counter}`);
+        }
+    }
+}
+
+function checkClick(x, y) {
+    let arrayCheck = getArr(x, y);
+    let counter = 0;
+    for (let i = 0; i < arrayCheck.length; i++) {
+        if (document.querySelector(`[positionX = "${arrayCheck[i][0]}"][positionY = "${arrayCheck[i][1]}"]`).classList.value == "classCell closeCell") {
+            arrayCoordinate.push([arrayCheck[i][0], arrayCheck[i][1]]);
+        }
+
+        if (document.querySelector(`[positionX = "${arrayCheck[i][0]}"][positionY = "${arrayCheck[i][1]}"]`).classList.value == "classMine closeCell") {
+            counter++;
+        } else document.querySelector(`[positionX = "${arrayCheck[i][0]}"][positionY = "${arrayCheck[i][1]}"]`).classList.remove("closeCell");
+    }
+}
+
 let timerId;
 function clickButton() {
     optimizeCalls();
@@ -253,33 +179,41 @@ function checkEmptyCells(event) {
 
     let x = Number(event.target.getAttribute("positionx"));
     let y = Number(event.target.getAttribute("positiony"));
-    openAround(x, y, 1);
-    function openAround(x, y, s) {
+    openAround(x, y, 1, 2);
+}
+
+function openAround(x, y, s, condition) {
+    // condition = 1;
+    if (condition == 1) {
+        checkCondition(x, y);
+    } else {
         checkClick(x, y);
-
         for (let i = 0; i < arrayCoordinate.length; i++) {
-            document
-                .querySelector(
-                    `[positionX = "${arrayCoordinate[i][0]}"][positionY = "${arrayCoordinate[i][1]}"]`
-                )
-                .classList.remove("closeCell");
+            document.querySelector(`[positionX = "${arrayCoordinate[i][0]}"][positionY = "${arrayCoordinate[i][1]}"]`).classList.remove("closeCell");
         }
+    }
 
-        if (s != 1) {
-            for (let i = 0; i < arrayCoordinate.length; i++) {
-                if (arrayCoordinate[i][0] == x && arrayCoordinate[i][1] == y) {
-                    arrayCoordinate.splice(i, 1);
-                }
+    if (s != 1) {
+        for (let i = 0; i < arrayCoordinate.length; i++) {
+            if (arrayCoordinate[i][0] == x && arrayCoordinate[i][1] == y) {
+                // alert("SoS");
+                arrayCoordinate.splice(i, 1);
             }
         }
-
+    }
+    if (condition == 1) {
         if (arrayCoordinate.length > 0) {
-            openAround(arrayCoordinate[0][0], arrayCoordinate[0][1], 10);
+            openAround(arrayCoordinate[0][0], arrayCoordinate[0][1], 10, 1);
+            arrayCoordinate.shift();
+        }
+    } else {
+        if (arrayCoordinate.length > 0) {
+            openAround(arrayCoordinate[0][0], arrayCoordinate[0][1], 10, 2);
         }
     }
 }
 
-function checkMineClass(event) {
+function explosionMineClass(event) {
     event.target.classList.remove("closeCell");
     event.target.classList.add("classBoom");
     event.target.classList.remove("classMine");
@@ -287,42 +221,24 @@ function checkMineClass(event) {
 
     for (let y = 1; y < 9; y++) {
         for (let x = 1; x < 9; x++) {
-            if (
-                document.querySelector(
-                    `[positionX = "${x}"][positionY = "${y}"]`
-                ).classList.value == "classMine closeCell"
-            ) {
-                document
-                    .querySelector(`[positionX = "${x}"][positionY = "${y}"]`)
-                    .classList.add("classBoom");
-                document
-                    .querySelector(`[positionX = "${x}"][positionY = "${y}"]`)
-                    .classList.remove("classMine");
+            if (document.querySelector(`[positionX = "${x}"][positionY = "${y}"]`).classList.value == "classMine closeCell") {
+                document.querySelector(`[positionX = "${x}"][positionY = "${y}"]`).classList.add("classBoom");
+                document.querySelector(`[positionX = "${x}"][positionY = "${y}"]`).classList.remove("classMine");
             }
-            if (
-                document.querySelector(
-                    `[positionX = "${x}"][positionY = "${y}"]`
-                ).classList.value == "classMine closeCell flagImg"
-            ) {
-                document
-                    .querySelector(`[positionX = "${x}"][positionY = "${y}"]`)
-                    .classList.remove("flagImg");
-                document
-                    .querySelector(`[positionX = "${x}"][positionY = "${y}"]`)
-                    .classList.add("classBoom");
-                document
-                    .querySelector(`[positionX = "${x}"][positionY = "${y}"]`)
-                    .classList.remove("classMine");
+            if (document.querySelector(`[positionX = "${x}"][positionY = "${y}"]`).classList.value == "classMine closeCell flagImg") {
+                document.querySelector(`[positionX = "${x}"][positionY = "${y}"]`).classList.remove("flagImg");
+                document.querySelector(`[positionX = "${x}"][positionY = "${y}"]`).classList.add("classBoom");
+                document.querySelector(`[positionX = "${x}"][positionY = "${y}"]`).classList.remove("classMine");
             }
         }
     }
     clearInterval(timerId);
     openListenerRight(10);
-    alert("End of Game");
 }
 function optimizeCalls() {
     createField();
-    checkCell();
+    fillMine();
+    openAround(1, 1, 1, 1);
     closeCell();
     openListener();
     openListenerRight(1);
