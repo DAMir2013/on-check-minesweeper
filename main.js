@@ -46,32 +46,9 @@ function getArr(x, y) {
 
     for (let i = 0; i < arrPosition.length; i++) {
         if (arrPosition[i][0] == x && arrPosition[i][1] == y) {
-            console.log("NUNU");
-            console.log(arrPosition[i][0]);
-            console.log(arrPosition[i][1]);
             arrPosition.splice(i, 1);
         }
     }
-    // let posX = 0;
-    // let posY = 0;
-    // let checkValueArray = [
-    //     [x - 1, y - 1],
-    //     [x, y - 1],
-    //     [x + 1, y - 1],
-    //     [x - 1, y],
-    //     [x + 1, y],
-    //     [x - 1, y + 1],
-    //     [x, y + 1],
-    //     [x + 1, y + 1],
-    // ];
-
-    // for (let elem of checkValueArray) {
-    //     posX = elem[0];
-    //     posY = elem[1];
-    //     if (posX > 0 && posX < 9 && posY > 0 && posY < 9) {
-    //         arrPosition.push([posX, posY]);
-    //     }
-    // }
 
     return arrPosition;
 }
