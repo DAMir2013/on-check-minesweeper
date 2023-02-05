@@ -219,4 +219,5 @@ function optimizeCalls() {
     closeCell();
     openListener();
     openListenerRight(1);
+    // openListenerRight(1);
 }
