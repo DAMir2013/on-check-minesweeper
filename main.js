@@ -68,24 +68,25 @@ function openListenerRight(condition) {
 }
 function getCoord(event) {
     document.querySelector("button").removeEventListener("click", clickButton);
+    let $ClassValue = event.target.classList.value;
 
-    if (event.target.classList.value == "classMine closeCell") {
+    if ($ClassValue == "classMine closeCell") {
         explosionMineClass(event);
     }
 
     if (
-        event.target.classList.value == "classCell class1 closeCell" ||
-        event.target.classList.value == "classCell class2 closeCell" ||
-        event.target.classList.value == "classCell class3 closeCell" ||
-        event.target.classList.value == "classCell class4 closeCell" ||
-        event.target.classList.value == "classCell class5 closeCell" ||
-        event.target.classList.value == "classCell class6 closeCell" ||
-        event.target.classList.value == "classCell class7 closeCell" ||
-        event.target.classList.value == "classCell class8 closeCell"
+        $ClassValue == "classCell class1 closeCell" ||
+        $ClassValue == "classCell class2 closeCell" ||
+        $ClassValue == "classCell class3 closeCell" ||
+        $ClassValue == "classCell class4 closeCell" ||
+        $ClassValue == "classCell class5 closeCell" ||
+        $ClassValue == "classCell class6 closeCell" ||
+        $ClassValue == "classCell class7 closeCell" ||
+        $ClassValue == "classCell class8 closeCell"
     ) {
         event.target.classList.remove("closeCell");
     }
-    if (event.target.classList.value == "classCell closeCell") {
+    if ($ClassValue == "classCell closeCell") {
         checkEmptyCells(event);
     }
 }
@@ -96,7 +97,8 @@ function checkCondition(x, y) {
     let counter = 0;
 
     for (let i = 0; i < array.length; i++) {
-        if (document.querySelector(`[positionX = "${array[i][0]}"][positionY = "${array[i][1]}"]`).classList.value == "classCell") {
+        const meaning = `[positionX = "${array[i][0]}"][positionY = "${array[i][1]}"]`;
+        if (document.querySelector(meaning).classList.value == "classCell") {
             let count = 0;
             for (let elem of arrayCoordinate) {
                 if (elem[0] == array[i][0] && elem[1] == array[i][1]) {
@@ -105,11 +107,11 @@ function checkCondition(x, y) {
             }
             if (count == 0) {
                 arrayCoordinate.push([array[i][0], array[i][1]]);
-                document.querySelector(`[positionX = "${array[i][0]}"][positionY = "${array[i][1]}"]`).classList.add("checkClass");
+                document.querySelector(meaning).classList.add("checkClass");
             }
         }
 
-        if (document.querySelector(`[positionX = "${array[i][0]}"][positionY = "${array[i][1]}"]`).classList.value == "classMine") {
+        if (document.querySelector(meaning).classList.value == "classMine") {
             counter++;
         }
     }
@@ -125,13 +127,14 @@ function checkClick(x, y) {
     let arrayCheck = getArr(x, y);
     let counter = 0;
     for (let i = 0; i < arrayCheck.length; i++) {
-        if (document.querySelector(`[positionX = "${arrayCheck[i][0]}"][positionY = "${arrayCheck[i][1]}"]`).classList.value == "classCell closeCell") {
+        const meaning = `[positionX = "${arrayCheck[i][0]}"][positionY = "${arrayCheck[i][1]}"]`;
+        if (document.querySelector(meaning).classList.value == "classCell closeCell") {
             arrayCoordinate.push([arrayCheck[i][0], arrayCheck[i][1]]);
         }
 
-        if (document.querySelector(`[positionX = "${arrayCheck[i][0]}"][positionY = "${arrayCheck[i][1]}"]`).classList.value == "classMine closeCell") {
+        if (document.querySelector(meaning).classList.value == "classMine closeCell") {
             counter++;
-        } else document.querySelector(`[positionX = "${arrayCheck[i][0]}"][positionY = "${arrayCheck[i][1]}"]`).classList.remove("closeCell");
+        } else document.querySelector(meaning).classList.remove("closeCell");
     }
 }
 
@@ -166,14 +169,15 @@ function openAround(x, y, s, condition) {
     } else {
         checkClick(x, y);
         for (let i = 0; i < arrayCoordinate.length; i++) {
-            document.querySelector(`[positionX = "${arrayCoordinate[i][0]}"][positionY = "${arrayCoordinate[i][1]}"]`).classList.remove("closeCell");
+            document
+                .querySelector(`[positionX = "${arrayCoordinate[i][0]}"][positionY = "${arrayCoordinate[i][1]}"]`)
+                .classList.remove("closeCell");
         }
     }
 
     if (s != 1) {
         for (let i = 0; i < arrayCoordinate.length; i++) {
             if (arrayCoordinate[i][0] == x && arrayCoordinate[i][1] == y) {
-                // alert("SoS");
                 arrayCoordinate.splice(i, 1);
             }
         }
@@ -198,14 +202,15 @@ function explosionMineClass(event) {
 
     for (let y = 1; y < 9; y++) {
         for (let x = 1; x < 9; x++) {
-            if (document.querySelector(`[positionX = "${x}"][positionY = "${y}"]`).classList.value == "classMine closeCell") {
-                document.querySelector(`[positionX = "${x}"][positionY = "${y}"]`).classList.add("classBoom");
-                document.querySelector(`[positionX = "${x}"][positionY = "${y}"]`).classList.remove("classMine");
+            const meaning = `[positionX = "${x}"][positionY = "${y}"]`;
+            if (document.querySelector(meaning).classList.value == "classMine closeCell") {
+                document.querySelector(meaning).classList.add("classBoom");
+                document.querySelector(meaning).classList.remove("classMine");
             }
-            if (document.querySelector(`[positionX = "${x}"][positionY = "${y}"]`).classList.value == "classMine closeCell flagImg") {
-                document.querySelector(`[positionX = "${x}"][positionY = "${y}"]`).classList.remove("flagImg");
-                document.querySelector(`[positionX = "${x}"][positionY = "${y}"]`).classList.add("classBoom");
-                document.querySelector(`[positionX = "${x}"][positionY = "${y}"]`).classList.remove("classMine");
+            if (document.querySelector(meaning).classList.value == "classMine closeCell flagImg") {
+                document.querySelector(meaning).classList.remove("flagImg");
+                document.querySelector(meaning).classList.add("classBoom");
+                document.querySelector(meaning).classList.remove("classMine");
             }
         }
     }
@@ -219,5 +224,4 @@ function optimizeCalls() {
     closeCell();
     openListener();
     openListenerRight(1);
-    // openListenerRight(1);
 }
